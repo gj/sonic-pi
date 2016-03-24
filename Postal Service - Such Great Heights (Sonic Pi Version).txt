@@ -152,38 +152,68 @@ define :bass do
   end
 end
 
-
-# SCORE STARTS HERE
-use_bpm 175
-
-# Panning Eighth Notes
-in_thread do
-  use_synth :sine
-  use_synth_defaults release: 0.4, amp: 1.75
-  with_fx :distortion, distort: 0.1 do
-    with_fx :nhpf, cutoff: 70 do
-      with_fx :panslicer, phase: 1 do
-        7.times do
-          eighths_up(:F3, :C4)
-          eighths_down(:F3, :C4)
-          eighths_up(:E3, :C4)
-          eighths_up(:E3, :C4)
-        end
-        eighths_up(:F3, :C4)
-        eighths_down(:F3, :C4)
+# Define Drum Sounds
+# Snare
+define :snare do
+  with_fx :compressor, slope_above: 0, clamp_time: 0, relax_time: 0 do
+    with_fx :distortion do
+      with_fx :reverb, mix: 0.05, damp: 1, room: 0.1 do
+        sample :elec_filt_snare, attack: 0, sustain: 0.04, rate: 2, amp: 2, release: 0
+        sample :sn_dolf, attack: 0, sustain: 0.06, rate: 1.1, release: 0
       end
     end
   end
 end
 
-# Opening Synth
-in_thread do
-  use_synth :beep
-  #  use_synth_defaults amp: 0.5
-  with_fx :reverb, room: 0.1, damp: 1, reps: 5 do
-    opening_synth
+# Hi-Hat
+define :hihat do
+  with_fx :compressor, clamp_time: 0, relax_time: 0 do
+    with_fx :reverb, mix: 0.2, damp: 1, room: 0.5 do
+      sample :drum_cymbal_closed, rate: 1.25
+    end
   end
 end
+
+# Kick
+define :kick do
+  with_fx :compressor, amp: 2, slope_above: 0, clamp_time: 0, relax_time: 0 do
+    # with_fx :distortion do
+    sample :bd_ada, amp: 2
+    # end
+  end
+end
+
+# SCORE STARTS HERE
+use_bpm 175
+
+# Panning Eighth Notes
+# in_thread do
+#   use_synth :sine
+#   use_synth_defaults release: 0.4, amp: 1.75
+#   with_fx :distortion, distort: 0.1 do
+#     with_fx :nhpf, cutoff: 70 do
+#       with_fx :panslicer, phase: 1 do
+#         7.times do
+#           eighths_up(:F3, :C4)
+#           eighths_down(:F3, :C4)
+#           eighths_up(:E3, :C4)
+#           eighths_up(:E3, :C4)
+#         end
+#         eighths_up(:F3, :C4)
+#         eighths_down(:F3, :C4)
+#       end
+#     end
+#   end
+# end
+
+# Opening Synth
+# in_thread do
+#   use_synth :beep
+#   #  use_synth_defaults amp: 0.5
+#   with_fx :reverb, room: 0.1, damp: 1, reps: 5 do
+#     opening_synth
+#   end
+# end
 
 # Bass Line
 in_thread do
@@ -191,7 +221,7 @@ in_thread do
   use_synth_defaults amp: 0.5, attack: 0.01, sustain: 0.5, release: 0.5, env_curve: 7, res: 0
   with_fx :nlpf, cutoff: 80 do
     # Measures 1-16
-    sleep 64
+    # sleep 64
     bass
   end
 end
@@ -199,29 +229,57 @@ end
 # Drums
 in_thread do
   # Measures 1-16
-  sleep 64
-  with_fx :distortion, distort: 0.2, reps: 192 do
+  # sleep 64
+  # Measures 17-30 w/ opening filter
+  with_fx :ixi_techno, mix: 1, phase: 112, res: 0 do
+    with_fx :compressor, reps: 7 do
+      3.times do
+        kick
+        sleep 0.5
+        hihat
+        sleep 0.5
+        kick
+        snare
+        sleep 0.5
+        hihat
+        sleep 0.5
+      end
+      kick
+      sleep 0.5
+      hihat
+      sleep 0.5
+      kick
+      snare
+      sleep 0.5
+      hihat
+      sleep 0.25
+      kick
+      sleep 0.25
+    end
+  end
+  # Measures 31+
+  with_fx :compressor, amp: 1.5, reps: 192 do
     3.times do
-      sample :bd_ada, amp: 2
+      kick
       sleep 0.5
-      sample :drum_cymbal_closed
+      hihat
       sleep 0.5
-      sample :bd_ada, amp: 2
-      sample :elec_hi_snare, rate: 1.4, amp: 2
+      kick
+      snare
       sleep 0.5
-      sample :drum_cymbal_closed
+      hihat
       sleep 0.5
     end
-    sample :bd_ada, amp: 2
+    kick
     sleep 0.5
-    sample :drum_cymbal_closed
+    hihat
     sleep 0.5
-    sample :bd_ada, amp: 2
-    sample :elec_hi_snare, rate: 1.4, amp: 2
+    kick
+    snare
     sleep 0.5
-    sample :drum_cymbal_closed
+    hihat
     sleep 0.25
-    sample :bd_ada, amp: 2
+    kick
     sleep 0.25
   end
 end
