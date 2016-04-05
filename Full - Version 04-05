@@ -49,25 +49,25 @@ end
 opening_loops = [ { # Measures 17, 19, 21, 23, 25, 27
                     :bd_ada               => "X...X...X...X..." ,
                     :sn_dolf              => "....X.......X..." ,
-                    :drum_cymbal_closed   => "..X...X...X...X." } ,
+                    :drum_cymbal_pedal   => "..X...X...X...X." } ,
                   { # Measures 18, 20, 22, 24, 28
                     :bd_ada               => "X...X...X...X..X" ,
                     :sn_dolf              => "....X.......X..." ,
-                    :drum_cymbal_closed   => "..X...X...X...X." } ,
+                    :drum_cymbal_pedal   => "..X...X...X...X." } ,
                   { # Measure 26
                     :bd_ada               => "X...X...X...X..." ,
                     :sn_dolf              => "....X.......X..." ,
-                    :drum_cymbal_closed   => "..X...X...X...X." ,
+                    :drum_cymbal_pedal   => "..X...X...X...X." ,
                     :drum_cymbal_open     => "..X............." } ,
                   { # Measure 29
                     :bd_ada               => "X...X...X...X..." ,
                     :sn_dolf              => "....X.......X..." ,
-                    :drum_cymbal_closed   => "..X...X.....X.X." ,
+                    :drum_cymbal_pedal   => "..X...X.....X.X." ,
                     :drum_cymbal_open     => "..........X....." } ,
                   { # Measure 30
                     :bd_ada               => "X...X...X.X.X.X." ,
                     :sn_dolf              => "....X.X...X...X." ,
-                    :drum_cymbal_closed   => "....X.X...X...X." ,
+                    :drum_cymbal_pedal   => "....X.X...X...X." ,
                     :drum_cymbal_open     => "..X............." ,
                     :elec_mid_snare       => "......X...X...X." } ]
 opening_order = [0, 1, 0, 1, 0, 1,        # Measures 17-22
@@ -92,10 +92,10 @@ in_thread do
   sleep 120.5                                         # Measures 1-31.125
   with_fx :compressor, slope_above: 0 do
     with_fx :reverb, mix: 0.2, damp: 1, room: 0.5 do
-      320.times do drum(:drum_cymbal_closed, 1) end   # Measures 31-110
-      96.times do drum(:drum_cymbal_open, 1) end      # Measures 111-134
+      320.times do drum(:drum_cymbal_pedal, 1) end   # Measures 31-110
+      96.times do drum(:drum_cymbal_closed, 1) end      # Measures 111-134
       sleep 4                                         # Measure  135
-      160.times do drum(:drum_cymbal_closed, 1) end   # Measures 136-175
+      160.times do drum(:drum_cymbal_pedal, 1) end   # Measures 136-175
       sleep 32                                        # Measures 176-183
 end end end
 
@@ -147,7 +147,7 @@ in_thread do
       sleep 1
 end end end
 
-# Main Snare
+# Main Snare                                            Pattern # - First instance (Measure)
 snare_loops = [ { :sn_dolf => "....X.......X..." } ,  # 0 - 31
                 { :sn_dolf => "....X.......X.X." } ,  # 1 - 32
                 { :sn_dolf => "X.XXX.X.....X.X." } ,  # 2 - 70
@@ -158,21 +158,21 @@ snare_loops = [ { :sn_dolf => "....X.......X..." } ,  # 0 - 31
                 { :sn_dolf => "....X.......X.XX" } ,  # 7 - 134
                 { :sn_dolf => "..........XX..XX" } ,  # 8 - 135
                 { :sn_dolf => "..X.X.....X.X.X." } ,  # 9 - 151
-                { :sn_dolf => "....X..........." } ]  # 10 - 169
-snare_order = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, # 31-46
-               0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, # 47-62
-               0, 1, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 4, 1, 5, 6, # 63-78
-               0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, # 79-94
-               0, 1, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 4, 1, 5, 6, # 95-110
-               0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, # 111-126
-               0, 1, 0, 1, 0, 1, 0, 7, 8, 0, 1, 0, 1, 0, 1, 0, # 127-142
-               2, 0, 3, 0, 3, 4, 1, 5, 9, 0, 1, 0, 1, 0, 1, 0, # 143-158
-               1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 10, 0, 10, 0, 10, # 159-173
-               0, 10, 0, 10, 0, 10, 0, 10, 0, 10]              # 174-183
+                { :sn_dolf => "....X..........." } ]  # 10 - 169   Measures
+snare_order = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,   # 31-46
+               0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,   # 47-62
+               0, 1, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 4, 1, 5, 6,   # 63-78
+               0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2,   # 79-94
+               0, 1, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 4, 1, 5, 6,   # 95-110
+               0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,   # 111-126
+               0, 1, 0, 1, 0, 1, 0, 7, 8, 0, 1, 0, 1, 0, 1, 0,   # 127-142
+               2, 0, 3, 0, 3, 4, 1, 5, 9, 0, 1, 0, 1, 0, 1, 0,   # 143-158
+               1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 10, 0, 10, 0, 10,   # 159-173
+               0, 10, 0, 10, 0, 10, 0, 10, 0, 10]                # 174-183
 in_thread do
   # sleep 56
   sleep 120                                           # Measures 1-30
-  with_fx :compressor, amp: 1.5, slope_above: 0 do
+  with_fx :compressor, amp: 1.2, slope_above: 0 do
     with_fx :distortion do
       with_fx :reverb, mix: 0.05, damp: 1, room: 0.1 do
         snare_order.each do |i|
