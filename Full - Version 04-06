@@ -7,6 +7,15 @@ use_bpm 175
 cue :drums
 cue :repetitions
 
+# Print Measures (for debugging)
+in_thread do
+  counter = 1
+  while counter < 192
+    print counter
+    counter = counter + 1
+    sleep 4
+end end
+
 # -==---====-----======-------========---------========== Vocals (Close enough!)
 define :vocals1 do
   play_pattern_timed [:F4, :F4, :F4, :G4, :E4, :C4, :C4, :E4, :E4, :E4, :F4, :D4, # measure 1-3
@@ -21,48 +30,50 @@ end
 
 in_thread do
   use_synth :piano
-  use_synth_defaults release: 2, hard: 0.25, stereo_width: 0.25
-  sleep 120  # Measures 1-30
-  with_fx :reverb, amp: 2, mix: 0.2, room: 0.5, damp: 0.9 do
-    with_fx :nhpf, cutoff: 60 do
+  use_synth_defaults decay: 0.75, hard: 0.35, stereo_width: 0.35
+  sleep 120                       # Measures 1-30
+  with_fx :nhpf, cutoff: 60 do
+    with_fx :reverb, amp: 2, mix: 0.2, room: 0.4, damp: 0.9 do |verb|
       play_pattern_timed [:F4, :C4], [3.5, 0.5]
       vocals1
       play_pattern_timed [:F3, :F3, :F4], [1, 0, 4]
       vocals1
       play_pattern_timed [:F3], [1, 0]
       2.times do
-        with_synth :piano do
-          play_pattern_timed [:F4], [4]
-          vocals1
-          play :F3
-          play_pattern_timed [:C4, :F4, :C4], [1, 3.5, 0.5]
-          vocals1
-          play :F3       # Measures 63, 95
-          with_synth :fm do
-            with_octave 1 do
-              sleep 1
-              vocals2
-              sleep 2
-              play_pattern_timed [:Bb3, :A3, :F3], [2, 7, 1]
-              vocals2
-              sleep 2
-              play_pattern_timed [:Bb3, :D4, :A3, :F3], [2, 2, 3, 3]
-      end end end end
-      sleep 100            # Measures 111-135
-      2.times do
-        vocals2
-        sleep 2
-        play_pattern_timed [:Bb3, :A3, :F3], [2, 7, 1]
-        vocals2
-        sleep 2
-        play_pattern_timed [:Bb3, :D4, :A3, :F3], [2, 2, 3, 3]
-      end
-      vocals2
-      sleep 12
-      play_pattern_timed [:C4, :C4, :C4, :A3, :C4, :C4, :C4, :F4, :Bb3],
-        [2, 1, 2, 1, 3, 2, 4, 2, 3]
-      sleep 112
-end end end
+        play_pattern_timed [:F4], [4]
+        vocals1
+        play :F3
+        play_pattern_timed [:C4, :F4, :C4], [1, 3.5, 0.5]
+        vocals1
+        play :F3                  # Measures 63, 95
+        with_synth :fm do
+          with_octave 1 do
+            sleep 1
+            vocals2
+            sleep 2
+            play_pattern_timed [:Bb3, :A3, :F3], [2, 7, 1]
+            vocals2
+            sleep 1
+            play_pattern_timed [:Bb3, :D4, :A3, :G3, :F3], [2, 2, 2, 1, 4]
+      end end end
+      sleep 100                   # Measures 111-135
+      with_synth :fm do
+        with_octave 1 do
+          2.times do
+            vocals2
+            sleep 2
+            play_pattern_timed [:Bb3, :A3, :F3], [2, 7, 1]
+            vocals2
+            sleep 1
+            play_pattern_timed [:Bb3, :D4, :A3, :G3, :F3, :F3], [2, 2, 2, 1, 3, 1]
+          end
+          vocals2
+          sleep 12
+          control verb, amp: 1, mix: 0.7, room: 0.75, damp: 0.9
+          play_pattern_timed [:C4, :C4, :C4, :A3, :C4, :C4, :C4, :F4, :Bb3],
+            [2, 1, 2, 1, 3, 2, 4, 2, 3]
+          sleep 112
+end end end end end
 
 # -==---====-----======-------========---------========== Piano
 define :piano1 do |pause|
@@ -92,10 +103,10 @@ end end end
 # -==---====-----======-------========---------========== Guitar
 in_thread do
   use_synth :fm
-  use_synth_defaults attack: 0.05, sustain: 0.35, release: 0.2
+  use_synth_defaults sustain: 0.35, release: 0.1
   sleep 440.5
   with_fx :distortion, distort: 0.9, pre_amp: 10, amp: 0.3 do
-    with_fx :bitcrusher, cutoff: 120, reps: 3 do
+    with_fx :bitcrusher, cutoff: 120, reps: 4 do
       play_pattern_timed [:F3, :F4, :F4, :F4, :F4, :F4, :F4, :F4, :F4, :E4,
                           :F3, :E4, :E4, :E4, :E4, :E4, :E4, :F4, :E4, :D4,
       :F3, :D4, :D4, :D4, :D4, :D4, :D4, :C4, :C4, :C4],
@@ -407,14 +418,14 @@ in_thread do
       with_fx :echo, phase: 1, decay: 1.975, max_phase: 1, reps: 4 do
         play_pattern_timed [:F1, :A1, :G1], [8]  # Measures 111-134
       end
-      play :Bb1, sustain: 4                                   # Measure 135
-      4.times do                                              # Measures 136-167
+      4.times do play_pattern [:Bb1] end                        # Measure 135
+      4.times do                                                # Measures 136-167
         play_pattern [:F1, :F1, :F1, :F1, :F1, :F1, :A1, :B1,
                       :C2, :C2, :C2, :C2, :C2, :C2, :C2, :C2,
                       :Bb1, :Bb1, :Bb1, :Bb1, :Bb1, :Bb1, :Bb1, :Bb1,
                       :A1, :A1, :A1, :A1, :A1, :A1, :A1, :A1]
       end
-      3.times do                                              # Measures 168-191
+      3.times do                                                # Measures 168-191
         play_pattern [:F1, :F1, :F1, :F1, :F1, :F1, :A1, :B1,
                       :C2, :C2, :C2, :C2, :C2, :D2, :D2, :F2,
                       :F2, :Bb1, :Bb1, :Bb1, :Bb1, :Bb1, :Bb1, :Bb1,
