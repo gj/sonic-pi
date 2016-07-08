@@ -127,31 +127,44 @@ live_loop :hihat do # hi-hat inspiration from Jindřich Mynarz
   use_synth :pnoise
   sleep 20
   with_fx :rhpf, cutoff: 122, res: 0.75, reps: 24 do
-    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.6 if (spread 3, 4, rotate: 2).tick
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.7 if (spread 3, 4, rotate: 2).tick
     sleep 0.5
   end
   sleep 4
   with_fx :rhpf, cutoff: 122, res: 0.75, reps: 56 do
-    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.6 if (spread 3, 4, rotate: 2).tick
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.8 if (spread 3, 4, rotate: 2).tick
     sleep 0.5
   end
   sleep 36
   with_fx :rhpf, cutoff: 122, res: 0.75, reps: 56 do
-    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.6 if (spread 3, 4, rotate: 2).tick
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.9 if (spread 3, 4, rotate: 2).tick
     sleep 0.5
   end
   sleep 4
 end
 
+live_loop :hihat2 do
+  c = :drum_cymbal_closed
+  beat = (ring :r, :r, c, :r, :r, :r, c, c, :r, :r, c, :r, :r, :r, c, :r)
+  2.times do
+    sleep 36
+    with_fx :reverb, room: 0.2, amp: 0.9, reps: 112 do
+      sample beat.tick
+      sleep 0.25
+    end
+  end
+  sleep 4
+end
+
 live_loop :snare do
-  with_fx :normaliser, reps: 2, level: 0.1 do |rev|
+  with_fx :normaliser, reps: 2, level: 0.125 do |rev|
     sleep 36
     with_fx :rhpf, reps: 14 do
       sleep 1
       sample :sn_dolf, start: 0.1, finish: 0.4
       sleep 1
     end
-    control rev, level: 0.2
+    control rev, level: 0.25
   end
   sleep 4
 end
