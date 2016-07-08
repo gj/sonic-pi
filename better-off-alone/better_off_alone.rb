@@ -10,7 +10,14 @@ live_loop :drumrolls do
       sleep 0.25
     end
   end
-  sleep 79.5
+  sleep 47.5
+  with_fx :ixi_techno, phase: 32, res: 0.9, cutoff_min: 0, cutoff_max: 129 do
+    64.times do
+      sample :sn_dolf, amp: 0.2, start: 0.1, finish: 0.4
+      sleep 0.25
+    end
+  end
+  sleep 16
   with_fx :ixi_techno, phase: 32, res: 0.9, cutoff_min: 0, cutoff_max: 129 do
     64.times do
       sample :sn_dolf, amp: 0.2, start: 0.1, finish: 0.4
@@ -20,16 +27,19 @@ live_loop :drumrolls do
   sleep 32
 end
 
-live_loop :testing do
+live_loop :weird_synth do
   use_synth :mod_dsaw
-  use_synth_defaults mod_phase: 1, mod_invert_wave: 1, mod_wave: 0, detune: 0.2, mod_range: 60, attack: 0.25, release: 0.75, amp: 0.4
+  use_synth_defaults mod_phase: 1, mod_invert_wave: 1, mod_wave: 0, detune: 0.2, mod_range: 60, attack: 0.25, release: 0.75, amp: 0.15
   sleep 4
   3.times do
     sleep 28
     with_fx :ixi_techno, phase: 8, res: 0.8, phase_offset: 0.5 do
-      with_fx :echo, phase: 1, decay: 4 do
-        with_fx :rhpf, mix: 0.5, cutoff: 110 do
-          play_pattern_timed [:E2], 4
+      with_fx :echo, phase: 2, decay: 4 do
+        with_fx :rhpf, mix: 0.7, cutoff: 110 do
+          with_fx :krush, gain: 10, cutoff: 130 do
+            play_pattern [:E2, :Gs2]
+            sleep 2
+          end
         end
       end
     end
@@ -41,7 +51,7 @@ live_loop :main_synth do
   sleep 4
   use_synth :dsaw
   use_synth_defaults cutoff: 115, detune: 0.05, sustain: 0.3, release: 0.2, amp: 0.9
-  with_fx :ixi_techno, phase: 256, cutoff_min: 95, res: 0 do |ixi|
+  with_fx :ixi_techno, phase: 256, cutoff_min: 100, res: 0, amp: 0.8 do |ixi|
     with_fx :echo, mix: 0.07, phase: 1, decay: 8 do
       with_fx :reverb, mix: 0.2, room: 0.3, damp: 0.4 do
         2.times do
