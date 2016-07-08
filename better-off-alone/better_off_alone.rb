@@ -144,12 +144,11 @@ live_loop :hihat do # hi-hat inspiration from Jindřich Mynarz
 end
 
 live_loop :hihat2 do
-  c = :drum_cymbal_closed
-  beat = (ring :r, :r, c, :r, :r, :r, c, c, :r, :r, c, :r, :r, :r, c, :r)
+  beat = (ring 0.1, 0.1, 1, 0.1, 0.1, 0.1, 1, 1, 0.1, 0.1, 1, 0.1, 0.1, 0.1, 1, 0.1)
   2.times do
     sleep 36
-    with_fx :reverb, room: 0.2, amp: 0.9, reps: 112 do
-      sample beat.tick
+    with_fx :reverb, room: 0.2, reps: 112 do
+      sample :drum_cymbal_closed, amp: beat.tick, finish: beat.look
       sleep 0.25
     end
   end
