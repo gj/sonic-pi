@@ -1,5 +1,4 @@
 # better off alone
-
 use_bpm 137
 
 live_loop :opening do
@@ -17,7 +16,7 @@ end
 live_loop :main_synth do
   sleep 4
   use_synth :dsaw
-  use_synth_defaults cutoff: 115, detune: 0.05, sustain: 0.3, release: 0.2
+  use_synth_defaults cutoff: 115, detune: 0.05, sustain: 0.3, release: 0.2, amp: 0.9
   with_fx :ixi_techno, phase: 256, cutoff_min: 95, res: 0 do |ixi|
     with_fx :echo, mix: 0.07, phase: 1, decay: 8 do
       with_fx :reverb, mix: 0.2, room: 0.3, damp: 0.4 do
@@ -28,8 +27,12 @@ live_loop :main_synth do
           play_pattern_timed [:B4, :B4, :Gs4, :Fs5, :Fs5, :Ds5,
                               :B4, :B4, :Gs4, :E5, :E5, :Ds5], [1, 0.5, 4.5, 0.75, 0.75, 0.5]
         end
+        2.times do
+          play_pattern_timed [:B4, :B4, :Gs4, :B4, :B4, :As4, :Fs4, :Fs5, :Fs5, :Ds5,
+                              :B4, :B4, :Gs4, :B4, :B4, :As4, :Fs4, :E5, :E5, :Ds5], [1, 0.5, 1, 1, 1, 1, 0.5, 0.75, 0.75, 0.5], release: 0.225
+        end
         control ixi, mix: 0
-        4.times do
+        2.times do
           play_pattern_timed [:B4, :B4, :Gs4, :B4, :B4, :As4, :Fs4, :Fs5, :Fs5, :Ds5,
                               :B4, :B4, :Gs4, :B4, :B4, :As4, :Fs4, :E5, :E5, :Ds5], [1, 0.5, 1, 1, 1, 1, 0.5, 0.75, 0.75, 0.5], release: 0.225
         end
@@ -99,12 +102,12 @@ live_loop :hihat do # hi-hat inspiration from Jindřich Mynarz
   use_synth :pnoise
   sleep 20
   with_fx :rhpf, cutoff: 122, res: 0.75, reps: 96 do
-    play :E1, attack: 0.01, decay: 0.04, release: 0.05
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.5 if (spread 3, 4, rotate: 2).tick
     sleep 0.5
   end
   sleep 32
   with_fx :rhpf, cutoff: 122, res: 0.75, reps: 64 do
-    play :E1, attack: 0.01, decay: 0.04, release: 0.05
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05 if (spread 3, 4, rotate: 2).tick
     sleep 0.5
   end
 end
