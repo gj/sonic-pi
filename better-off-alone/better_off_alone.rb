@@ -41,96 +41,95 @@ live_loop :main_synth do
   end
 end
 
+def bass
+  play_pattern_timed [:E1, :E2, :E1, :E2, :E1, :E2, :E1, :E2, :Ds1, :Ds2, :Ds1, :Ds2, :Ds1, :Ds2, :Ds1, :Ds2,
+                      :Gs1, :Gs2, :Gs1, :Gs2, :Gs1, :Gs2, :Gs1, :Gs2, :Fs1, :Fs2, :Fs1, :Fs2, :Fs1, :Fs2, :Fs1, :Fs2], [0.5]
+  play_pattern_timed [:E1, :E2, :E1, :E2, :E1, :E2, :E1, :E2, :Ds1, :Ds2, :Ds1, :Ds2, :Ds1, :Ds2, :Ds1, :Ds2,
+                      :Gs1, :Gs2, :Gs1, :Gs2, :Gs1, :Gs2, :Gs1, :Gs2], [0.5]
+  play_pattern_timed [:Fs1, :Fs2, :Fs2, :Fs2, :Fs2], [0.5, 1, 1, 1]
+end
+
 live_loop :bass do
   sleep 4
   use_synth :dsaw
-  use_synth_defaults release: 0.225, res: 0, cutoff: 60, detune: 0
-  use_octave -1
-  with_fx :compressor, amp: 0.4, slope_above: 1, slope_below: 0.9 do
-    with_fx :mono, reps: 4 do
-      play_pattern_timed [:E2, :E3, :E2, :E3, :E2, :E3, :E2, :E3,
-                          :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3,
-                          :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3,
-                          :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3], [0.5]
-    end
-    sleep 32
-    with_fx :mono, reps: 2 do
-      play_pattern_timed [:E2, :E3, :E2, :E3, :E2, :E3, :E2, :E3,
-                          :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3,
-                          :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3,
-                          :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3], [0.5]
-    end
+  use_synth_defaults release: 0.225, res: 0, cutoff: 70, detune: 0, amp: 0.4
+  2.times do
+    bass
   end
+  sleep 32
+  bass
 end
 
-live_loop :sub_base do
+live_loop :sub_bass do
   sleep 4
-  use_synth :sine
   use_synth_defaults release: 0.2, env_curve: 1
-  use_octave -1
   with_fx :normaliser, level: 0.2 do
-    with_fx :mono, reps: 4 do
-      play_pattern_timed [:E2, :E3, :E2, :E3, :E2, :E3, :E2, :E3,
-                          :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3,
-                          :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3,
-                          :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3], [0.5]
+    2.times do
+      bass
     end
     sleep 32
-    with_fx :mono, reps: 2 do
-      play_pattern_timed [:E2, :E3, :E2, :E3, :E2, :E3, :E2, :E3,
-                          :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3, :Ds2, :Ds3,
-                          :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3, :Gs2, :Gs3,
-                          :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3, :Fs2, :Fs3], [0.5]
-    end
+    bass
   end
 end
 
 live_loop :kick do
-  sleep 4
-  64.times do
+  sleep 1
+  2.times do
+    sleep 3
+    29.times do
+      sample :bd_haus
+      sleep 1
+    end
+  end
+  sleep 35
+  29.times do
     sample :bd_haus
     sleep 1
   end
-  sleep 32
-  32.times do
-    sample :bd_haus
-    sleep 1
-  end
+  sleep 3
 end
 
 live_loop :hihat do # hi-hat inspiration from Jindřich Mynarz
   use_synth :pnoise
   sleep 20
-  with_fx :rhpf, cutoff: 122, res: 0.75, reps: 96 do
-    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.5 if (spread 3, 4, rotate: 2).tick
+  with_fx :rhpf, cutoff: 122, res: 0.75, reps: 24 do
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.6 if (spread 3, 4, rotate: 2).tick
     sleep 0.5
   end
-  sleep 32
-  with_fx :rhpf, cutoff: 122, res: 0.75, reps: 64 do
-    play :E1, attack: 0.01, decay: 0.04, release: 0.05 if (spread 3, 4, rotate: 2).tick
+  sleep 4
+  with_fx :rhpf, cutoff: 122, res: 0.75, reps: 56 do
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.6 if (spread 3, 4, rotate: 2).tick
     sleep 0.5
   end
+  sleep 36
+  with_fx :rhpf, cutoff: 122, res: 0.75, reps: 56 do
+    play :E1, attack: 0.01, decay: 0.04, release: 0.05, amp: 0.6 if (spread 3, 4, rotate: 2).tick
+    sleep 0.5
+  end
+  sleep 4
 end
 
-live_loop :snare do
-  sleep 36
-  16.times do
-    sleep 1
-    sample :sn_dolf, amp: 0.15, start: 0.1, finish: 0.4
-    sleep 1
-  end
-  sleep 16
+live_loop :drumroll do
+  sleep 84
   with_fx :ixi_techno, phase: 32, res: 0.9, cutoff_min: 0, cutoff_max: 129 do
     64.times do
       sample :sn_dolf, amp: 0.2, start: 0.1, finish: 0.4
       sleep 0.25
     end
   end
-  16.times do
-    sleep 1
-    sample :sn_dolf, amp: 0.5, start: 0.1, finish: 0.4
-    sleep 1
+end
+
+live_loop :snare do
+  with_fx :normaliser, reps: 2, level: 0.1 do |rev|
+    sleep 36
+    with_fx :rhpf, reps: 14 do
+      sleep 1
+      sample :sn_dolf, start: 0.1, finish: 0.4
+      sleep 1
+    end
+    control rev, level: 0.2
   end
+  sleep 4
 end
 
 live_loop :filter_synth do
@@ -139,8 +138,8 @@ live_loop :filter_synth do
   use_synth_defaults release: 0.2, res: 0.9, cutoff_min: 110, cutoff: 130
   amps = [0.1, 1, 0.1, 0.5, 0.5]
   notes = [:E2, :Ds2, :Gs2, :Fs2]
-  sleeps = [0.5, 0.5, 0.25, 0.25, 0.5]
-  with_fx :ixi_techno, phase: 32, reps: 2 do
+  sleeps = [0.5, 0.25, 0.5, 0.25, 0.5]
+  with_fx :ixi_techno, phase: 32, reps: 2, amp: 1.2 do
     notes.each do |n|
       2.times do
         amps.each do |a|
