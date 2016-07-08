@@ -1,7 +1,7 @@
 # better off alone
 use_bpm 137
 
-live_loop :opening do
+live_loop :drumrolls do
   sample :drum_splash_soft, rate: -0.775, finish: 0.75, amp: 0.75
   use_synth :pnoise
   with_fx :ixi_techno, phase: 8, phase_offset: 0.4, cutoff_min: 79, cutoff_max: 129, amp: 2 do
@@ -10,7 +10,31 @@ live_loop :opening do
       sleep 0.25
     end
   end
-  sleep 127.5
+  sleep 79.5
+  with_fx :ixi_techno, phase: 32, res: 0.9, cutoff_min: 0, cutoff_max: 129 do
+    64.times do
+      sample :sn_dolf, amp: 0.2, start: 0.1, finish: 0.4
+      sleep 0.25
+    end
+  end
+  sleep 32
+end
+
+live_loop :testing do
+  use_synth :mod_dsaw
+  use_synth_defaults mod_phase: 1, mod_invert_wave: 1, mod_wave: 0, detune: 0.2, mod_range: 60, attack: 0.25, release: 0.75, amp: 0.4
+  sleep 4
+  3.times do
+    sleep 28
+    with_fx :ixi_techno, phase: 8, res: 0.8, phase_offset: 0.5 do
+      with_fx :echo, phase: 1, decay: 4 do
+        with_fx :rhpf, mix: 0.5, cutoff: 110 do
+          play_pattern_timed [:E2], 4
+        end
+      end
+    end
+  end
+  sleep 32
 end
 
 live_loop :main_synth do
@@ -109,16 +133,6 @@ live_loop :hihat do # hi-hat inspiration from Jindřich Mynarz
   sleep 4
 end
 
-live_loop :drumroll do
-  sleep 84
-  with_fx :ixi_techno, phase: 32, res: 0.9, cutoff_min: 0, cutoff_max: 129 do
-    64.times do
-      sample :sn_dolf, amp: 0.2, start: 0.1, finish: 0.4
-      sleep 0.25
-    end
-  end
-end
-
 live_loop :snare do
   with_fx :normaliser, reps: 2, level: 0.1 do |rev|
     sleep 36
@@ -154,15 +168,13 @@ end
 
 def thick_pad(note, key)
   use_synth :supersaw
-  use_synth_defaults res: 0, cutoff: 100, sustain: 2, release: 2, attack: 2, amp: 0.3
+  use_synth_defaults res: 0, cutoff: 100, sustain: 2, release: 2, attack: 2, amp: 0.35
   with_fx :reverb, mix: 0.5, room: 0.5, damp: 0.5 do
-    with_fx :rhpf, cutoff: 65, res: 0.9 do
+    play chord(note, key, num_octaves: 3)
+    with_synth :dsaw do
       play chord(note, key, num_octaves: 3)
-      with_synth :dsaw do
-        play chord(note, key, num_octaves: 3)
-      end
-      sleep 4
     end
+    sleep 4
   end
 end
 
