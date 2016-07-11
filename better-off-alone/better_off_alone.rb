@@ -153,22 +153,16 @@ live_loop :hihat do # hi-hat inspiration from Jindřich Mynarz
 end
 
 live_loop :hihat2 do
-  beat1 = (ring 0, 0, 0.4, 0, 0, 0, 0.4, 0.4, 0, 0, 0.4, 0, 0, 0, 0.4, 0)
-  beat2 = (ring 0.1, 0.1, 0.4, 0.1, 0.1, 0.1, 0.4, 0.4, 0.1, 0.1, 0.4, 0.1, 0.1, 0.1, 0.4, 0.1)
+  beat = (ring 0, 0, 0.4, 0, 0, 0, 0.4, 0.4, 0, 0, 0.4, 0, 0, 0, 0.4, 0)
   sleep 36
   with_fx :reverb, room: 0.2, reps: 112 do
-    sample :drum_cymbal_closed, amp: 2*beat1.tick, finish: beat1.look
+    sample :drum_cymbal_closed, amp: 2*beat.tick, finish: beat.look
     sleep 0.25
   end
   sleep 36
-  with_fx :reverb, room: 0.2, reps: 112 do
-    sample :drum_cymbal_closed, amp: 2*beat2.tick, finish: beat2.look
-    sleep 0.25
-  end
-  sleep 4
-  2.times do
+  3.times do
     with_fx :reverb, room: 0.2, reps: 112 do
-      sample :drum_cymbal_closed, amp: 2*beat1.tick, finish: beat1.look
+      sample :drum_cymbal_closed, amp: 0.1+2*beat.tick, finish: 0.1+beat.look
       sleep 0.25
     end
     sleep 4
@@ -248,7 +242,7 @@ def trance_synth(order, detune, phase_offset)
   trance_notes = [[:Gs4, :E4], [:As4, :Fs4], [:B4, :Gs4], [:Ds5, :Gs4]]
   use_synth :dsaw
   use_synth_defaults detune: detune, cutoff: 130, env_curve: 4, release: 0.4, amp: 0.8
-  with_fx :ixi_techno, phase: 64, phase_offset: phase_offset, cutoff_min: 110, cutoff_max: 125, res: 0 do
+  with_fx :ixi_techno, phase: 64, phase_offset: phase_offset, cutoff_min: 110, res: 0.5 do
     with_fx :reverb, mix: 0.2, room: 0.75, damp: 1 do
       order.each{|order| 4.times do play_pattern_timed trance_notes[order], 0.5 end }
     end
@@ -257,9 +251,9 @@ end
 
 live_loop :trance_synth do
   sleep 132
-  trance_synth([0], 0.12, 0)
-  trance_synth([1], 0.16, 0.0625)
+  trance_synth([0], 0.15, 0)
+  trance_synth([1], 0.175, 0.0625)
   trance_synth([2], 0.20, 0.125)
-  trance_synth([1], 0.24, 0.1875)
-  trance_synth([0, 1, 2, 3, 0, 1, 2, 1, 0, 1, 2, 3], 0.28, 0.25)
+  trance_synth([1], 0.225, 0.1875)
+  trance_synth([0, 1, 2, 3, 0, 1, 2, 1, 0, 1, 2, 3], 0.25, 0.25)
 end
