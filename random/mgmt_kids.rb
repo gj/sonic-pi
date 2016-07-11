@@ -11,7 +11,7 @@ live_loop :kids do
   notes2 = [[:A4, :B4, :Cs5, :B4], [:A4], [:B4], [:A4, :Fs4], [:A4], [:Gs4]]
   notes3 = [[:A4, :B4, :Cs5, :B4], [:A4], [:B4], [:A4, :Fs4], [:A4], [:D5, :Cs5, :B4], [:A4], [:B4, :A4, :Gs4]]
   order = [notes1, notes2, notes1, notes3]
-  sync :drums
+  sync :pad
   use_synth :dsaw
   use_synth_defaults detune: 0.12, cutoff: 100, release: 0.2, amp: 1
   with_fx :reverb, room: 0.4, damp: 1, mix: 0.1 do
