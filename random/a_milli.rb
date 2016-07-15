@@ -16,14 +16,14 @@ drum_hash = {
   :bd_boom            => "X--X--X---X--X--",
   
   # uncomment the below if you want a hi-hat
-  :drum_cymbal_closed => "xXxxXxxXxxXxxXxX",
+  ##| :drum_cymbal_closed => "xXxxXxxXxxXxxXxX",
   
   # uncomment the below if you want random sounds
   ##| :ambi_lunar_land    => "X---------------",
-  :ambi_piano         => "X-----O---------",
+  ##| :ambi_piano         => "X-----O---------",
   ##| :ambi_glass_hum     => "X---------------",
   ##| :ambi_drone     => "X---------------",
-  :ambi_soft_buzz     => "X---------O--O--",
+  ##| :ambi_soft_buzz     => "X---------O--O--",
 }
 
 live_loop :drums do
