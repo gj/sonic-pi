@@ -87,7 +87,7 @@ end
 live_loop :bass do
   sleep 4
   use_synth :dsaw
-  use_synth_defaults release: 0.225, res: 0, cutoff: 70, detune: 0, amp: 0.4
+  use_synth_defaults release: 0.225, res: 0, cutoff: 75, detune: 0, amp: 0.4
   2.times do
     bass
   end
@@ -154,24 +154,20 @@ end
 
 live_loop :hihat2 do
   beat = (ring 0, 0, 0.4, 0, 0, 0, 0.4, 0.4, 0, 0, 0.4, 0, 0, 0, 0.4, 0)
-  sleep 36
-  with_fx :reverb, room: 0.2, reps: 112 do
-    sample :drum_cymbal_closed, amp: 2*beat.tick, finish: beat.look
-    sleep 0.25
-  end
-  sleep 36
-  3.times do
+  with_fx :ixi_techno, phase: 16, phase_offset: 0.5, cutoff_min: 110, cutoff_max: 129, reps: 3, res: 0.3 do |mixer|
+    sleep 36
     with_fx :reverb, room: 0.2, reps: 112 do
-      sample :drum_cymbal_closed, amp: 0.1+2*beat.tick, finish: 0.1+beat.look
+      sample :drum_cymbal_closed, amp: 0.5+2*beat.tick, finish: 0.1+beat.look
       sleep 0.25
     end
-    sleep 4
+    control mixer, mix: 0
   end
+  sleep 4
 end
 
 live_loop :snare do
   with_fx :normaliser, level: 0.125 do |rev|
-    2.times do
+    3.times do
       sleep 36
       with_fx :rhpf, reps: 14 do
         sleep 1
@@ -181,36 +177,30 @@ live_loop :snare do
       control rev, level: 0.25
     end
     sleep 4
-    2.times do
-      with_fx :rhpf, reps: 14 do
-        sleep 1
-        sample :sn_dolf, start: 0.1, finish: 0.4
-        sleep 1
-      end
-      sleep 4
-    end
   end
 end
 
 live_loop :filter_synth do
-  sleep 100
+  sleep 68
   use_synth :tb303
   use_synth_defaults release: 0.2, res: 0.9, cutoff_min: 110, cutoff: 130
   amps = [0.1, 1, 0.1, 0.5, 0.5]
   notes = [:E2, :Ds2, :Gs2, :Fs2]
   sleeps = [0.5, 0.25, 0.5, 0.25, 0.5]
-  with_fx :ixi_techno, phase: 32, reps: 2, amp: 1.2 do
-    notes.each do |n|
-      2.times do
-        amps.each do |a|
-          play n, amp: a
-          s = sleeps.shift
-          sleep sleeps.push(s).last
+  2.times do
+    sleep 32
+    with_fx :ixi_techno, phase: 32, reps: 2, amp: 1.2 do
+      notes.each do |n|
+        2.times do
+          amps.each do |a|
+            play n, amp: a
+            s = sleeps.shift
+            sleep sleeps.push(s).last
+          end
         end
       end
     end
   end
-  sleep 64
 end
 
 def thick_pad(note, key)
@@ -228,21 +218,20 @@ end
 live_loop :pad do
   sleep 68
   with_fx :ixi_techno, phase: 64, cutoff_min: 80, cutoff_max: 129 do
-    4.times do
+    8.times do
       thick_pad(:E2, :major)
       thick_pad(:Ds2, :minor)
       thick_pad(:Gs2, :minor)
       thick_pad(:Fs2, :major)
     end
   end
-  sleep 64
 end
 
 def trance_synth(order, detune, phase_offset)
   trance_notes = [[:Gs4, :E4], [:As4, :Fs4], [:B4, :Gs4], [:Ds5, :Gs4]]
   use_synth :dsaw
-  use_synth_defaults detune: detune, cutoff: 130, env_curve: 4, release: 0.4, amp: 0.8
-  with_fx :ixi_techno, phase: 64, phase_offset: phase_offset, cutoff_min: 110, res: 0.5 do
+  use_synth_defaults detune: detune, cutoff: 130, env_curve: 4, release: 0.4, amp: 0.7
+  with_fx :ixi_techno, phase: 64, phase_offset: phase_offset, cutoff_min: 115, cutoff_max: 129, res: 0.5 do
     with_fx :reverb, mix: 0.2, room: 0.75, damp: 1 do
       order.each{|order| 4.times do play_pattern_timed trance_notes[order], 0.5 end }
     end
@@ -252,8 +241,8 @@ end
 live_loop :trance_synth do
   sleep 132
   trance_synth([0], 0.15, 0)
-  trance_synth([1], 0.175, 0.0625)
-  trance_synth([2], 0.20, 0.125)
-  trance_synth([1], 0.225, 0.1875)
-  trance_synth([0, 1, 2, 3, 0, 1, 2, 1, 0, 1, 2, 3], 0.25, 0.25)
+  trance_synth([1], 0.18, 0.0625)
+  trance_synth([2], 0.21, 0.125)
+  trance_synth([1], 0.24, 0.1875)
+  trance_synth([0, 1, 2, 3, 0, 1, 2, 1, 0, 1, 2, 3], 0.27, 0.25)
 end
