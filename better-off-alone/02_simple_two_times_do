@@ -1,0 +1,50 @@
+use_bpm 137
+
+use_synth :tb303
+use_synth_defaults release: 0.2, res: 0.9, cutoff_min: 110, cutoff: 130
+
+live_loop :filter_synth do
+  2.times do
+    2.times do
+      play :E2
+      sleep 0.5
+      play :E2
+      sleep 0.25
+    end
+    play :E2
+    sleep 0.5
+  end
+  
+  2.times do
+    2.times do
+      play :Ds2
+      sleep 0.5
+      play :Ds2
+      sleep 0.25
+    end
+    play :Ds2
+    sleep 0.5
+  end
+  
+  2.times do
+    2.times do
+      play :Gs2
+      sleep 0.5
+      play :Gs2
+      sleep 0.25
+    end
+    play :Gs2
+    sleep 0.5
+  end
+  
+  2.times do
+    2.times do
+      play :Fs2
+      sleep 0.5
+      play :Fs2
+      sleep 0.25
+    end
+    play :Fs2
+    sleep 0.5
+  end
+end
