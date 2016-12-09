@@ -4,3 +4,4 @@
 - [Kids](https://github.com/gj/sonic-pi/blob/master/random/mgmt_kids.rb)
 - [Grindin'](https://github.com/gj/sonic-pi/blob/master/random/clipse_grindin.rb)
 - [A Milli](https://github.com/gj/sonic-pi/blob/master/random/a_milli.rb)
+- [What is Love?](https://github.com/gj/sonic-pi/blob/master/random/what_is_love.rb)
