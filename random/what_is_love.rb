@@ -27,8 +27,6 @@ def bass_line
                       :F3, :F3, :F3, :D3, :F3], [1, 0.75, 0.75, 1, 0.5]
 end
 
-##| use_bpm 12
-
 def drums
   sample_patterns = {
     :bd_tek             => "9-------9-------9-------9-------",
@@ -37,27 +35,23 @@ def drums
   }
   
   32.times do |i|
-    sample_patterns.each do |s, p|
-      ##| puts i / 8 if i % 8 == 0
-      
-      puts "BASS DRUM!" if s == :bd_tek && p[i] != "-"
-      
-      ##| case p[i]
-      ##| when "9" then sample s, amp: 1.5, finish: 0.5
-      ##| when "6" then sample s, amp: 1, finish: 0.2
-      ##| when "3" then sample s, amp: 0.67, finish: 0.5
-      ##| when "1" then sample s, amp: 0.1, finish: 0.1
-      ##| end
+    sample_patterns.each do |s, p|            
+      case p[i]
+      when "9" then sample s, amp: 1.5, finish: 0.5
+      when "6" then sample s, amp: 1, finish: 0.2
+      when "3" then sample s, amp: 0.67, finish: 0.5
+      when "1" then sample s, amp: 0.1, finish: 0.1
+      end
     end
     sleep 0.125
   end
 end
 
 def play_song
-  ##| live_loop :chip_synth do
-  ##|   sync :bass_line
-  ##|   chip_synth
-  ##| end
+  live_loop :chip_synth do
+    sync :bass_line
+    chip_synth
+  end
   
   live_loop :bass_line do
     bass_line
